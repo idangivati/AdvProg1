@@ -23,6 +23,22 @@ vector<vector<float>> titleVector(const TimeSeries& ts , vector<string> t) {
     }
     return v;
 }
+
+void SimpleAnomalyDetector::usual(const TimeSeries& ts, correlatedFeatures sf, float maxD, int size,
+                                  Point** pointArr, float *x, float *y, float maxP){
+    sf.corrlation = maxP;
+    for(int k = 0; k < size; k++) {
+        pointArr[k] = new Point(x[k], y[k]);
+    }
+    sf.lin_reg = linear_reg(pointArr, size);
+    for(int s = 0; s < size; s++) {
+        if(maxD < dev(*pointArr[s], sf.lin_reg)) {
+            maxD = dev(*pointArr[s], sf.lin_reg);
+        }
+    }
+    sf.threshold = maxD * 1.2;
+    cf.push_back(sf);
+}
 /**
  * This function learn which of the vector correlated to the others, and learns the correlated features.
  * @param ts the time series
@@ -44,18 +60,7 @@ void SimpleAnomalyDetector::learnNormal(const TimeSeries& ts) {
             sf.feature2 = titles[j];
             maxP = abs(pearson(x, y, size));
             if(maxP >= 0.9) {
-                sf.corrlation = maxP;
-                for(int k = 0; k < size; k++) {
-                    pointArr[k] = new Point(x[k], y[k]);
-                }
-                sf.lin_reg = linear_reg(pointArr, size);
-                for(int s = 0; s < size; s++) {
-                     if(maxD < dev(*pointArr[s], sf.lin_reg)) {
-                         maxD = dev(*pointArr[s], sf.lin_reg);
-                     }
-                }
-                sf.threshold = maxD * 1.2;
-                cf.push_back(sf);
+                usual(ts, sf, maxD, size, pointArr, x, y, maxP);
             }
         }
     }

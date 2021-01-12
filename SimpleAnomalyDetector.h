@@ -26,7 +26,8 @@ public:
 
     virtual void learnNormal(const TimeSeries& ts);
     virtual vector<AnomalyReport> detect(const TimeSeries& ts);
-
+    virtual void usual(const TimeSeries& ts, correlatedFeatures sf, float maxD, int size,
+                       Point** pointArr, float *x, float *y, float maxP);
     vector<correlatedFeatures> getNormalModel(){
         return cf;
     }
