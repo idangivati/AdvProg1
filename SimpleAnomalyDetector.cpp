@@ -1,4 +1,3 @@
-
 #include "SimpleAnomalyDetector.h"
 
 SimpleAnomalyDetector::SimpleAnomalyDetector() {
@@ -25,8 +24,7 @@ vector<vector<float>> titleVector(const TimeSeries& ts , vector<string> t) {
 }
 
 void SimpleAnomalyDetector::usual(const TimeSeries& ts, correlatedFeatures sf, float maxD, int size,
-                                  Point** pointArr, float *x, float *y, float maxP){
-    sf.corrlation = maxP;
+                                  Point** pointArr, float *x, float *y) {
     for(int k = 0; k < size; k++) {
         pointArr[k] = new Point(x[k], y[k]);
     }
@@ -36,6 +34,7 @@ void SimpleAnomalyDetector::usual(const TimeSeries& ts, correlatedFeatures sf, f
             maxD = dev(*pointArr[s], sf.lin_reg);
         }
     }
+    sf.circleCor = nullptr;
     sf.threshold = maxD * 1.2;
     cf.push_back(sf);
 }
@@ -51,7 +50,7 @@ void SimpleAnomalyDetector::learnNormal(const TimeSeries& ts) {
     float* y;
     float maxD = 0, maxP = 0;
     Point** pointArr = new Point*[size];
-    for(int i = 0; i < titles.size()- 1; i++) {
+    for(int i = 0; i < titles.size() - 1; i++) {
         x = const_cast<float *>(theVectors[i].data());
         for(int j = i + 1; j < titles.size(); j++) {
             correlatedFeatures sf;
@@ -59,8 +58,10 @@ void SimpleAnomalyDetector::learnNormal(const TimeSeries& ts) {
             sf.feature1 = titles[i];
             sf.feature2 = titles[j];
             maxP = abs(pearson(x, y, size));
+            usual(ts, sf, maxD, size, pointArr, x, y);
             if(maxP >= 0.9) {
-                usual(ts, sf, maxD, size, pointArr, x, y, maxP);
+                sf.corrlation = maxP;
+                usual(ts, sf, maxD, size, pointArr, x, y);
             }
         }
     }
@@ -91,4 +92,3 @@ vector<AnomalyReport> SimpleAnomalyDetector::detect(const TimeSeries& ts) {
     }
     return report;
 }
-

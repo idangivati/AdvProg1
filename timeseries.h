@@ -1,5 +1,3 @@
-
-
 #ifndef TIMESERIES_H_
 #define TIMESERIES_H_
 
@@ -18,7 +16,7 @@ public:
     vector<string> getTitles() const;
     vector<float> vectorOfTitles(string feature) const;
     float getFeature(string feature, float time);
-    float addRow(vector<float>);
+    void addRow(vector<float>);
 };
 
 

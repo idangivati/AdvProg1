@@ -73,7 +73,7 @@ float TimeSeries::getFeature(string feature, float time) {
  * @return adding a row into the map.
  */
 
-float TimeSeries::addRow(vector<float> newInfo) {
+void TimeSeries::addRow(vector<float> newInfo) {
     for(int i = 0; i < (int)titles.size(); i++) {
         csvMap[titles[i]].push_back(newInfo[i]);
     }

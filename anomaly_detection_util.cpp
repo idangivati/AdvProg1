@@ -1,4 +1,3 @@
-
 /*
  * anomaly_detection_util.cpp
  *
@@ -68,8 +67,3 @@ float dev(Point p,Line l){
         x*=-1;
     return x;
 }
-
-
-
-
-
