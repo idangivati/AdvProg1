@@ -2,7 +2,6 @@
 
 SimpleAnomalyDetector::SimpleAnomalyDetector() {
     // TODO Auto-generated constructor stub
-
 }
 
 SimpleAnomalyDetector::~SimpleAnomalyDetector() {
@@ -24,7 +23,7 @@ vector<vector<float>> titleVector(const TimeSeries& ts , vector<string> t) {
 }
 
 void SimpleAnomalyDetector::usual(const TimeSeries& ts, correlatedFeatures sf, float maxP, int size,
-                                  Point** pointArr, float *x, float *y) {
+                                  Point** pointArr) {
     if (maxP >= 0.9) {
         maxP = 0;
         sf.lin_reg = linear_reg(pointArr, size);
@@ -62,7 +61,7 @@ void SimpleAnomalyDetector::learnNormal(const TimeSeries& ts) {
             for (int k = 0; k < size; k++) {
                 pointArr[k] = new Point(x[k], y[k]);
             }
-            usual(ts, sf, maxP, size, pointArr, x, y);
+            usual(ts, sf, maxP, size, pointArr);
         }
     }
 }

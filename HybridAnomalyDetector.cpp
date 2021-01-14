@@ -8,9 +8,16 @@ HybridAnomalyDetector::HybridAnomalyDetector() {
 HybridAnomalyDetector::~HybridAnomalyDetector() {
     // TODO Auto-generated destructor stub
 }
-
+/**
+ *
+ * @param ts
+ * @param sf
+ * @param maxP
+ * @param size
+ * @param pointArr
+ */
 void HybridAnomalyDetector::usual(const TimeSeries& ts, correlatedFeatures sf, float maxP, int size,
-                                  Point** pointArr, float *x, float *y) {
+                                  Point** pointArr) {
     if(maxP > 0.5 && maxP < 0.9) {
         Circle minCircle = findMinCircle(pointArr, size);
         minCircle.radius *= 1.1;
@@ -21,9 +28,15 @@ void HybridAnomalyDetector::usual(const TimeSeries& ts, correlatedFeatures sf, f
         setNormalModel(cf);
     }
     else {
-        SimpleAnomalyDetector::usual(ts, sf, maxP, size, pointArr, x, y);
+        SimpleAnomalyDetector::usual(ts, sf, maxP, size, pointArr);
     }
 }
+/**
+ * Checking the distance between our center and the point.
+ * @param j our center circle of the correlation.
+ * @param c the point we to see the distance from the center.
+ * @return
+ */
 float HybridAnomalyDetector::checkDist(correlatedFeatures j, Point *c) {
     if (j.corrlation < 0.9 && j.corrlation > 0.5) {
         return distacneBetween(*j.circleCor, *c);

@@ -15,7 +15,7 @@ public:
     virtual void circleCorrelation(const TimeSeries& ts, correlatedFeatures sf, int size,
                                    Point** pointArr, float *x, float *y);*/
     virtual void usual(const TimeSeries& ts, correlatedFeatures sf, float maxP, int size,
-                       Point** pointArr, float *x, float *y);
+                       Point** pointArr);
     virtual float checkDist(correlatedFeatures j, Point *c);
 };
 
