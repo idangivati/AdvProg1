@@ -23,20 +23,20 @@ vector<vector<float>> titleVector(const TimeSeries& ts , vector<string> t) {
     return v;
 }
 
-void SimpleAnomalyDetector::usual(const TimeSeries& ts, correlatedFeatures sf, float maxD, int size,
+void SimpleAnomalyDetector::usual(const TimeSeries& ts, correlatedFeatures sf, float maxP, int size,
                                   Point** pointArr, float *x, float *y) {
-    for(int k = 0; k < size; k++) {
-        pointArr[k] = new Point(x[k], y[k]);
-    }
-    sf.lin_reg = linear_reg(pointArr, size);
-    for(int s = 0; s < size; s++) {
-        if(maxD < dev(*pointArr[s], sf.lin_reg)) {
-            maxD = dev(*pointArr[s], sf.lin_reg);
+    if (maxP >= 0.9) {
+        maxP = 0;
+        sf.lin_reg = linear_reg(pointArr, size);
+        for (int s = 0; s < size; s++) {
+            if (maxP < dev(*pointArr[s], sf.lin_reg)) {
+                maxP = dev(*pointArr[s], sf.lin_reg);
+            }
         }
+        sf.circleCor = nullptr;
+        sf.threshold = maxP * 1.2;
+        cf.push_back(sf);
     }
-    sf.circleCor = nullptr;
-    sf.threshold = maxD * 1.2;
-    cf.push_back(sf);
 }
 /**
  * This function learn which of the vector correlated to the others, and learns the correlated features.
@@ -58,13 +58,16 @@ void SimpleAnomalyDetector::learnNormal(const TimeSeries& ts) {
             sf.feature1 = titles[i];
             sf.feature2 = titles[j];
             maxP = abs(pearson(x, y, size));
-            usual(ts, sf, maxD, size, pointArr, x, y);
-            if(maxP >= 0.9) {
-                sf.corrlation = maxP;
-                usual(ts, sf, maxD, size, pointArr, x, y);
+            sf.corrlation = maxP;
+            for (int k = 0; k < size; k++) {
+                pointArr[k] = new Point(x[k], y[k]);
             }
+            usual(ts, sf, maxP, size, pointArr, x, y);
         }
     }
+}
+float SimpleAnomalyDetector::checkDist(correlatedFeatures j, Point *c) {
+    return dev(*c, j.lin_reg);
 }
 /**
  * This function receive the flights, row by row and checks if there is a point that too far away.
@@ -83,7 +86,8 @@ vector<AnomalyReport> SimpleAnomalyDetector::detect(const TimeSeries& ts) {
             one = ts.vectorOfTitles(j.feature1);
             two = ts.vectorOfTitles(j.feature2);
             auto *c = new Point(one[i], two[i]);
-            if(dev(*c, j.lin_reg) > j.threshold) {
+            //if(dev(*c, j.lin_reg) > j.threshold) {
+            if (checkDist(j, c) > j.threshold){
                 saveReport = j.feature1 + "-" + j.feature2;
                 AnomalyReport r = AnomalyReport(saveReport, i + 1);
                 report.push_back(r);

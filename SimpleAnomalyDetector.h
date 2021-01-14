@@ -14,7 +14,7 @@ struct correlatedFeatures{
     float corrlation;
     Line lin_reg;
     float threshold;
-    Circle *circleCor;
+    Point *circleCor;
 };
 
 
@@ -24,8 +24,8 @@ public:
     SimpleAnomalyDetector();
     virtual ~SimpleAnomalyDetector();
     virtual void learnNormal(const TimeSeries& ts);
-    virtual vector<AnomalyReport> detect(const TimeSeries& ts);
-    virtual void usual(const TimeSeries& ts, correlatedFeatures sf, float maxD, int size,
+    vector<AnomalyReport> detect(const TimeSeries& ts);
+    virtual void usual(const TimeSeries& ts, correlatedFeatures sf, float maxP, int size,
                        Point** pointArr, float *x, float *y);
     vector<correlatedFeatures> getNormalModel(){
         return cf;
@@ -33,7 +33,7 @@ public:
     void setNormalModel(vector<correlatedFeatures> sf){
         cf = sf;
     }
-
+    virtual float checkDist(correlatedFeatures j, Point *c);
 };
 
 

@@ -1,21 +1,20 @@
-/*
 
 #include <iostream>
 #include <vector>
 #include "AnomalyDetector.h"
 #include "SimpleAnomalyDetector.h"
 #include <fstream>
-#include <stdlib.h>     */
-/* srand, rand *//*
+#include <stdlib.h>
+ /*srand, rand */
 
-#include <time.h>       */
-/* time *//*
+#include <time.h>
+/* time */
 
 #include <math.h>
 
 using namespace std;
 
-// this is a simple test to put you on the right track
+ //this is a simple test to put you on the right track
 void generateTrainCSV(float a1,float b1, float a2, float b2){
     ofstream out("trainFile1.csv");
     out<<"A,B,C,D"<<endl;
@@ -116,4 +115,4 @@ int main(){
     cout<<"done"<<endl;
     return 0;
 }
-*/
+
