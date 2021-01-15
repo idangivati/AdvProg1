@@ -6,20 +6,41 @@ CLI::CLI(DefaultIO* dio) {
 
 void CLI::start() {
     bool check = 1;
-    int size = 7;
-    Command *menu[size];
-    menu[0] = nullptr;
-    menu[1] = new uploadTimeS;
-    menu[2] = new algoSet;
-    menu[3] = new detectAnomaly;
-    menu[4] = new showResults;
-    menu[5] = new uploadAnomaly;
-    menu[6] = new finish;
-    dio->write("Welcome to the Anomaly Detection Server.");
-    dio->write("Please choose an option:");
-    cout << "WTF" << endl;
-    for (int i = 1; i <= size; i++) {
+    int size = 6;
+    float choice = 0;
+    int convChoice;
+    Command** menu = new Command*[size];
+    menu[0] = new uploadTimeS(dio);
+    menu[1] = new algoSet(dio);
+    menu[2] = new detectAnomaly(dio);
+    menu[3] = new showResults(dio);
+    menu[4] = new uploadAnomaly(dio);
+    menu[5] = new finish(dio);
+    /*dio->write("Welcome to the Anomaly Detection Server.\r\n");
+    dio->write("Please choose an option:\r\n");
+    //cout << dio->read() << endl;
+    for (int i = 0; i < size; i++) {
         menu[i]->cDescription();
+    }*/
+    while(check) {
+        dio->write("Welcome to the Anomaly Detection Server.\r\n");
+        dio->write("Please choose an option:\r\n");
+        for (int i = 0; i < size; i++) {
+            menu[i]->cDescription();
+        }
+        dio->read(&choice);
+        if (choice < 1 || choice > 6 || floorf(choice) != choice) {
+            check = false;
+        }
+        else {
+            convChoice = (int) choice;
+            if (convChoice == 6){
+                check = false;
+            }
+            else {
+                menu[convChoice - 1]->execute();
+            }
+        }
     }
 }
 

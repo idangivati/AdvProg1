@@ -85,7 +85,6 @@ vector<AnomalyReport> SimpleAnomalyDetector::detect(const TimeSeries& ts) {
             one = ts.vectorOfTitles(j.feature1);
             two = ts.vectorOfTitles(j.feature2);
             auto *c = new Point(one[i], two[i]);
-            //if(dev(*c, j.lin_reg) > j.threshold) {
             if (checkDist(j, c) > j.threshold){
                 saveReport = j.feature1 + "-" + j.feature2;
                 AnomalyReport r = AnomalyReport(saveReport, i + 1);

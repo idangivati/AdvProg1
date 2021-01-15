@@ -37,13 +37,14 @@ public:
     Command() {};
 	virtual void execute()=0;
 	virtual ~Command(){};
-    virtual void cDescription() {};
+    virtual void cDescription() {};;
 };
 
 // implement here your command classes
 class uploadTimeS: public Command{
-    string description = "1. upload a time series csv file\n";
+    string description = "1.upload a time series csv file\r\n";
 public:
+    uploadTimeS(DefaultIO* dio) : Command (dio) {}
     virtual void cDescription() {
         dio->write(description);
     };
@@ -53,9 +54,10 @@ public:
         string trainLine = dio->read();
         if (trainCsv.is_open())
         {
-            while (trainLine != "done\n")
+            while (trainLine != "done\r\n")
             {
                 trainCsv << trainLine;
+                trainLine = dio->read();
             }
             trainCsv.close();
         }
@@ -67,26 +69,28 @@ public:
             while (testLine != "done\n")
             {
                 testCsv << testLine;
+                testLine = dio->read();
             }
             testCsv.close();
         }
         else cout << "Unable to open file";
-        dio->write("Upload complete.");
+        dio->write("Upload complete.\n");
     }
 };
 class algoSet: public Command{
-    string description = "2. algorithm settings\n";
+    string description = "2.algorithm settings\r\n";
     float threshold = 0.9;
 public:
+    algoSet(DefaultIO* dio) : Command (dio) {}
     virtual void cDescription() {
         dio->write(description);
     };
     virtual void execute(){
-        dio->write("The current correlation threshold is " + std::to_string(threshold));
+        dio->write("The current correlation threshold is " + std::to_string(threshold) + "\n");
         float nextThresh = 0;
         dio->read(&nextThresh);
         while(nextThresh < 0 || nextThresh > 1) {
-            dio->write("please choose a value between 0 and 1.");
+            dio->write("please choose a value between 0 and 1.\n");
             dio->read(&nextThresh);
         }
 
@@ -94,8 +98,9 @@ public:
 };
 
 class detectAnomaly: public Command{
-    string description = "3. detect anomalies\n";
+    string description = "3.detect anomalies\r\n";
 public:
+    detectAnomaly(DefaultIO* dio) : Command (dio) {}
     virtual void cDescription() {
         dio->write(description);
     };
@@ -105,8 +110,9 @@ public:
 };
 
 class showResults: public Command{
-    string description = "4. display results\n";
+    string description = "4.display results\r\n";
 public:
+    showResults(DefaultIO* dio) : Command (dio) {}
     virtual void cDescription() {
         dio->write(description);
     };
@@ -117,8 +123,9 @@ public:
 };
 
 class uploadAnomaly: public Command{
-    string description = "5. upload anomalies and analyze results\n";
+    string description = "5.upload anomalies and analyze results\r\n";
 public:
+    uploadAnomaly(DefaultIO* dio) : Command (dio) {}
     virtual void cDescription() {
         dio->write(description);
     };
@@ -129,8 +136,9 @@ public:
 };
 
 class finish: public Command{
-    string description = "6. exit\n";
+    string description = "6.exit\r\n";
 public:
+    finish(DefaultIO* dio) : Command (dio) {}
     virtual void cDescription() {
         dio->write(description);
     };
