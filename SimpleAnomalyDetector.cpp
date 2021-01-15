@@ -22,10 +22,6 @@ vector<vector<float>> titleVector(const TimeSeries& ts , vector<string> t) {
     return v;
 }
 
-float SimpleAnomalyDetector::getThresholdMin(float thresholdMin){
-    return this->thresholdMin;
-}
-
 void SimpleAnomalyDetector::usual(const TimeSeries& ts, correlatedFeatures sf, float maxP, int size,
                                   Point** pointArr) {
     if (maxP >= thresholdMin) {
@@ -97,4 +93,8 @@ vector<AnomalyReport> SimpleAnomalyDetector::detect(const TimeSeries& ts) {
         }
     }
     return report;
+}
+
+SimpleAnomalyDetector::SimpleAnomalyDetector(float thresholdMin) {
+    this->thresholdMin = thresholdMin;
 }

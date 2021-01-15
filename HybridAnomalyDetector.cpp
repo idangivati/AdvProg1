@@ -1,5 +1,6 @@
 #include "HybridAnomalyDetector.h"
 
+HybridAnomalyDetector::HybridAnomalyDetector(float thresholdMin):SimpleAnomalyDetector(thresholdMin) {}
 HybridAnomalyDetector::HybridAnomalyDetector() {
     // TODO Auto-generated constructor stub
 

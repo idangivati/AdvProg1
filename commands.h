@@ -41,10 +41,10 @@ public:
 };
 
 // implement here your command classes
-class uploadTimeS: public Command{
+class UploadTimeS: public Command{
     string description = "1.upload a time series csv file\r\n";
 public:
-    uploadTimeS(DefaultIO* dio) : Command (dio) {}
+    UploadTimeS(DefaultIO* dio) : Command (dio) {}
     virtual void cDescription() {
         dio->write(description);
     };
@@ -71,11 +71,11 @@ public:
         dio->write("Upload complete.\r\n");
     }
 };
-class algoSet: public Command{
+class AlgoSet: public Command{
     string description = "2.algorithm settings\r\n";
     float threshold = 0.9;
 public:
-    algoSet(DefaultIO* dio) : Command (dio) {}
+    AlgoSet(DefaultIO* dio) : Command (dio) {}
     virtual void cDescription() {
         dio->write(description);
     };
@@ -90,14 +90,17 @@ public:
         }
         threshold = nextThresh;
     }
+    float getThreshold(){
+        return this->threshold;
+    }
 };
 
-class detectAnomaly: public Command {
+class DetectAnomaly: public Command {
     string description = "3.detect anomalies\r\n";
     HybridAnomalyDetector detector;
     vector<AnomalyReport> report;
 public:
-    detectAnomaly(DefaultIO* dio) : Command (dio) {}
+    DetectAnomaly(DefaultIO* dio) : Command (dio) {}
     virtual void cDescription() {
         dio->write(description);
     };
@@ -106,36 +109,53 @@ public:
         report = detector.detect(TimeSeries("anomalyTest.csv"));
         dio->write("anomaly detection complete.\r\n");
     }
+    vector<AnomalyReport>* getReport() {
+        return &this->report;
+    }
+    void setThreshold(float threshold){
+        detector = HybridAnomalyDetector(threshold);
+    }
 };
 
-class showResults: public Command {
+class ShowResults: public Command {
     string description = "4.display results\r\n";
+    vector<AnomalyReport> *vr;
 public:
-    showResults(DefaultIO* dio) : Command (dio) {}
+    ShowResults(DefaultIO* dio) : Command (dio) {}
     virtual void cDescription() {
         dio->write(description);
     };
     virtual void execute() {
-
+        for(AnomalyReport r: *vr){
+            dio->write(std::to_string(r.timeStep) + '\t' + r.description + '\n');
+        }
+        dio->write("Done.\r\n");
+    }
+    void setReport(vector<AnomalyReport>* report){
+        this->vr = report;
     }
 };
 
-class uploadAnomaly: public Command{
+class UploadAnomaly: public Command{
     string description = "5.upload anomalies and analyze results\r\n";
+    vector<AnomalyReport> *vr;
 public:
-    uploadAnomaly(DefaultIO* dio) : Command (dio) {}
+    UploadAnomaly(DefaultIO* dio) : Command (dio) {}
     virtual void cDescription() {
         dio->write(description);
     };
     virtual void execute(){
 
     }
+    void setReport(vector<AnomalyReport>* report){
+        this->vr = report;
+    }
 };
 
-class finish: public Command {
+class Finish: public Command {
     string description = "6.exit\r\n";
 public:
-    finish(DefaultIO* dio) : Command (dio) {}
+    Finish(DefaultIO* dio) : Command (dio) {}
     virtual void cDescription() {
         dio->write(description);
     };
