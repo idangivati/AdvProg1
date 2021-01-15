@@ -18,7 +18,7 @@ HybridAnomalyDetector::~HybridAnomalyDetector() {
  */
 void HybridAnomalyDetector::usual(const TimeSeries& ts, correlatedFeatures sf, float maxP, int size,
                                   Point** pointArr) {
-    if(maxP > 0.5 && maxP < 0.9) {
+    if(maxP > 0.5 && maxP < getThresholdMin()) {
         Circle minCircle = findMinCircle(pointArr, size);
         minCircle.radius *= 1.1;
         sf.threshold = minCircle.radius;

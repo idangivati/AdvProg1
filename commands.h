@@ -49,32 +49,26 @@ public:
         dio->write(description);
     };
     virtual void execute(){
-        dio->write("Please upload your local train CSV file.\n");
+        dio->write("Please upload your local train CSV file.\r\n");
         ofstream trainCsv ("anomalyTrain.csv");
-        string trainLine = dio->read();
-        if (trainCsv.is_open())
+        string trainLine = dio->read() + '\n' ;
+        while (trainLine != "done\n")
         {
-            while (trainLine != "done\r\n")
-            {
-                trainCsv << trainLine;
-                trainLine = dio->read();
-            }
-            trainCsv.close();
+            trainCsv << trainLine;
+            trainLine = dio->read() + '\n';
         }
-        else cout << "Unable to open file";
+        trainCsv.close();
+        dio->write("Upload complete.\r\n");
+        dio->write("Please upload your local test CSV file.\r\n");
         ofstream testCsv ("anomalyTest.csv");
-        string testLine = dio->read();
-        if (testCsv.is_open())
+        string testLine = dio->read() + '\n';
+        while (testLine != "done\n")
         {
-            while (testLine != "done\n")
-            {
-                testCsv << testLine;
-                testLine = dio->read();
-            }
-            testCsv.close();
+            testCsv << testLine;
+            testLine = dio->read() + '\n';;
         }
-        else cout << "Unable to open file";
-        dio->write("Upload complete.\n");
+        testCsv.close();
+        dio->write("Upload complete.\r\n");
     }
 };
 class algoSet: public Command{
@@ -86,38 +80,42 @@ public:
         dio->write(description);
     };
     virtual void execute(){
-        dio->write("The current correlation threshold is " + std::to_string(threshold) + "\n");
+        dio->write("The current correlation threshold is " + std::to_string(threshold) + "\r\n");
+        dio->write("Type a new threshold\r\n");
         float nextThresh = 0;
         dio->read(&nextThresh);
         while(nextThresh < 0 || nextThresh > 1) {
-            dio->write("please choose a value between 0 and 1.\n");
+            dio->write("please choose a value between 0 and 1.\r\n");
             dio->read(&nextThresh);
         }
-
+        threshold = nextThresh;
     }
 };
 
-class detectAnomaly: public Command{
+class detectAnomaly: public Command {
     string description = "3.detect anomalies\r\n";
+    HybridAnomalyDetector detector;
+    vector<AnomalyReport> report;
 public:
     detectAnomaly(DefaultIO* dio) : Command (dio) {}
     virtual void cDescription() {
         dio->write(description);
     };
-    virtual void execute(){
-
+    virtual void execute() {
+        detector.learnNormal(TimeSeries("anomalyTrain.csv"));
+        report = detector.detect(TimeSeries("anomalyTest.csv"));
+        dio->write("anomaly detection complete.\r\n");
     }
 };
 
-class showResults: public Command{
+class showResults: public Command {
     string description = "4.display results\r\n";
 public:
     showResults(DefaultIO* dio) : Command (dio) {}
     virtual void cDescription() {
         dio->write(description);
     };
-    virtual void execute(){
-
+    virtual void execute() {
 
     }
 };
@@ -131,11 +129,10 @@ public:
     };
     virtual void execute(){
 
-
     }
 };
 
-class finish: public Command{
+class finish: public Command {
     string description = "6.exit\r\n";
 public:
     finish(DefaultIO* dio) : Command (dio) {}
@@ -143,7 +140,6 @@ public:
         dio->write(description);
     };
     virtual void execute(){
-
 
     }
 };

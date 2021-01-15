@@ -34,10 +34,11 @@ void CLI::start() {
         }
         else {
             convChoice = (int) choice;
-            if (convChoice == 6){
+            if (convChoice == 6) {
                 check = false;
             }
             else {
+                //cout << "WTF" << endl;
                 menu[convChoice - 1]->execute();
             }
         }
