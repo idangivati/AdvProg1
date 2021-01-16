@@ -10,6 +10,7 @@ void CLI::start() {
     float choice = 0;
     int convChoice;
     Command** menu = new Command*[size];
+    UploadTimeS* uploadTimeS = new UploadTimeS(dio);
     AlgoSet* algoSet = new AlgoSet(dio);
     DetectAnomaly* detectAnomaly = new DetectAnomaly(dio);
     ShowResults* showResults = new ShowResults(dio);
@@ -17,18 +18,13 @@ void CLI::start() {
     detectAnomaly->setThreshold(algoSet->getThreshold());
     showResults->setReport(detectAnomaly->getReport());
     uploadAnomaly->setReport(detectAnomaly->getReport());
-    menu[0] = new UploadTimeS(dio);
+    uploadAnomaly->setN(uploadTimeS->getN());
+    menu[0] = uploadTimeS;
     menu[1] = algoSet;
     menu[2] = detectAnomaly;
     menu[3] = showResults;
     menu[4] = uploadAnomaly;
     menu[5] = new Finish(dio);
-    /*dio->write("Welcome to the Anomaly Detection Server.\r\n");
-    dio->write("Please choose an option:\r\n");
-    //cout << dio->read() << endl;
-    for (int i = 0; i < size; i++) {
-        menu[i]->cDescription();
-    }*/
     while(check) {
         dio->write("Welcome to the Anomaly Detection Server.\r\n");
         dio->write("Please choose an option:\r\n");

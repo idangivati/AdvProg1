@@ -43,6 +43,7 @@ public:
 // implement here your command classes
 class UploadTimeS: public Command{
     string description = "1.upload a time series csv file\r\n";
+    int n = 0;
 public:
     UploadTimeS(DefaultIO* dio) : Command (dio) {}
     virtual void cDescription() {
@@ -64,11 +65,16 @@ public:
         string testLine = dio->read() + '\n';
         while (testLine != "done\n")
         {
+            n++;
             testCsv << testLine;
             testLine = dio->read() + '\n';;
         }
+        n--;
         testCsv.close();
         dio->write("Upload complete.\r\n");
+    }
+    int* getN(){
+        return &this->n;
     }
 };
 class AlgoSet: public Command{
@@ -90,8 +96,8 @@ public:
         }
         threshold = nextThresh;
     }
-    float getThreshold(){
-        return this->threshold;
+    float *getThreshold(){
+        return &this->threshold;
     }
 };
 
@@ -112,8 +118,8 @@ public:
     vector<AnomalyReport>* getReport() {
         return &this->report;
     }
-    void setThreshold(float threshold){
-        detector = HybridAnomalyDetector(threshold);
+    void setThreshold(float *threshold){
+        detector = HybridAnomalyDetector(*threshold);
     }
 };
 
@@ -139,16 +145,77 @@ public:
 class UploadAnomaly: public Command{
     string description = "5.upload anomalies and analyze results\r\n";
     vector<AnomalyReport> *vr;
+    int *rowNumber;
 public:
     UploadAnomaly(DefaultIO* dio) : Command (dio) {}
     virtual void cDescription() {
         dio->write(description);
     };
-    virtual void execute(){
-
+    void setN(int *n){
+        this->rowNumber = n;
     }
     void setReport(vector<AnomalyReport>* report){
         this->vr = report;
+    }
+    virtual void execute(){
+        vector<int> ts;
+        vector<int> ourReport;
+        float receiveP = 0, trueP = 0, range = 0, trueRate, falseRate, falseP = 0;
+        int index = 0, N;
+        vector<int> addUp;
+        int currentTime = 0;
+        addUp.push_back(vr->at(0).timeStep);
+        for (AnomalyReport a: *vr) {
+            ourReport.push_back(a.timeStep);
+        }
+        currentTime = vr->at(0).timeStep;
+        for (int i = 0; i < vr->size() - 1; i++) {
+            if (vr->at(i + 1).timeStep != currentTime + 1 || vr->at(i).description != vr->at(i + 1).description) {
+                addUp.push_back(ourReport[i]);
+                addUp.push_back(ourReport[i+1]);
+            }
+            currentTime = vr->at(i + 1).timeStep;
+        }
+        addUp.push_back(ourReport[ourReport.size() - 1]);
+
+        dio->write("Please upload your local anomalies file.\n");
+        string line = dio->read() + '\n';
+        while (line != "done\n") {
+            ts.push_back(0);
+            for (int i = 0; line[i] != '\n'; i++) {
+                if (line[i] == ',') {
+                    index++;
+                    ts.push_back(0);
+                } else {
+                    ts[index] = ts[index] * 10 + (line[i] - '0');
+                }
+            }
+            receiveP++;
+            index++;
+            line = dio->read() + '\n';
+        }
+        dio->write("Upload complete.\n");
+        for (int i = 0; i < ts.size(); i += 2) {
+            for (int k = 0; k < addUp.size() - 1; k += 2) {
+                if (ts[i] <= addUp[k] && addUp[k] <= ts[i + 1] ||
+                        addUp[k] <= ts[i] && ts[i] <= addUp[k + 1]) {
+                    trueP++;
+                    break;
+                }
+            }
+        }
+        for (int i = 0; i < ts.size() - 1; i += 2) {
+            range += (ts[i + 1] - ts[i]) + 1;
+        }
+        N = (*this->rowNumber - range);
+        falseP = (addUp.size() / 2) - trueP;
+        falseRate = falseP / N;
+        trueRate = trueP / receiveP;
+        trueRate = trueRate * 1000;
+        trueRate = floorf(trueRate);
+        trueRate = trueRate / 1000;
+        dio->write("True Positive Rate: " + std::to_string(trueRate) + '\n');
+        dio->write("False Positive Rate: " + std::to_string(falseRate) + '\n');
     }
 };
 
