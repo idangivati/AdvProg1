@@ -21,7 +21,15 @@ vector<vector<float>> titleVector(const TimeSeries& ts , vector<string> t) {
     }
     return v;
 }
-
+/**
+ * In this function we want to check if the correlation is high enough, so we can calculate the threshold,
+ * by the dev and linear regulation.
+ * @param ts our received time series
+ * @param sf the correlated features we working on.
+ * @param maxP the correlation.
+ * @param size tje size pf the array.
+ * @param pointArr the point correlation array.
+ */
 void SimpleAnomalyDetector::usual(const TimeSeries& ts, correlatedFeatures sf, float maxP, int size,
                                   Point** pointArr) {
     if (maxP >= thresholdMin) {
@@ -65,6 +73,12 @@ void SimpleAnomalyDetector::learnNormal(const TimeSeries& ts) {
         }
     }
 }
+/**
+ * Checking the distance according to the instructions.
+ * @param j the correlated feature we want the lin reg from.
+ * @param c the point we calculate the distance from.
+ * @return
+ */
 float SimpleAnomalyDetector::checkDist(correlatedFeatures j, Point *c) {
     return dev(*c, j.lin_reg);
 }
@@ -94,7 +108,10 @@ vector<AnomalyReport> SimpleAnomalyDetector::detect(const TimeSeries& ts) {
     }
     return report;
 }
-
+/**
+ * Constructor.
+ * @param thresholdMin the desired threshold.
+ */
 SimpleAnomalyDetector::SimpleAnomalyDetector(float thresholdMin) {
     this->thresholdMin = thresholdMin;
 }

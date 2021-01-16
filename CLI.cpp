@@ -3,7 +3,9 @@
 CLI::CLI(DefaultIO* dio) {
     this->dio = dio;
 }
-
+/**
+ * This function start the menu and connect
+ */
 void CLI::start() {
     bool check = 1;
     int size = 6;
@@ -26,22 +28,23 @@ void CLI::start() {
     menu[4] = uploadAnomaly;
     menu[5] = new Finish(dio);
     while(check) {
-        dio->write("Welcome to the Anomaly Detection Server.\r\n");
-        dio->write("Please choose an option:\r\n");
+        // the menu
+        dio->write("Welcome to the Anomaly Detection Server.\n");
+        dio->write("Please choose an option:\n");
         for (int i = 0; i < size; i++) {
             menu[i]->cDescription();
         }
         dio->read(&choice);
         if (choice < 1 || choice > 6 || floorf(choice) != choice) {
+            // we the user pressed a number that is not on the menu.
             check = false;
         }
         else {
             convChoice = (int) choice;
-            if (convChoice == 6) {
+            if (convChoice == 6) { // if the user pressed exit.
                 check = false;
             }
             else {
-                //cout << "WTF" << endl;
                 menu[convChoice - 1]->execute();
             }
         }

@@ -10,12 +10,13 @@ HybridAnomalyDetector::~HybridAnomalyDetector() {
     // TODO Auto-generated destructor stub
 }
 /**
- *
- * @param ts
- * @param sf
- * @param maxP
- * @param size
- * @param pointArr
+ * This function compare to the simple anomaly, check if the correlation is the mid correlation required,
+ * to make a minimal circle, and by that we can calculate the desired threshold and our center as well.
+ * @param ts our received time series
+ * @param sf the correlated features we working on.
+ * @param maxP the correlation.
+ * @param size tje size pf the array.
+ * @param pointArr the point correlation array.
  */
 void HybridAnomalyDetector::usual(const TimeSeries& ts, correlatedFeatures sf, float maxP, int size,
                                   Point** pointArr) {
