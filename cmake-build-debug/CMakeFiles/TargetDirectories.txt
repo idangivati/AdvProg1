@@ -1,0 +1,3 @@
+/home/idan/Desktop/AdvProg1/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/idan/Desktop/AdvProg1/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/idan/Desktop/AdvProg1/cmake-build-debug/CMakeFiles/untitled9.dir
