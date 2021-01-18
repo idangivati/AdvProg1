@@ -1,8 +1,8 @@
-*
+/*
 * Server.h
         *
         *  Created on: Dec 13, 2020
-*      Author: Eli
+*      Author: Idan Givati
 */
 
 #ifndef SERVER_H_
@@ -19,29 +19,54 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include "CLI.h"
+#include "commands.h"
 
 using namespace std;
 
 // edit your ClientHandler interface here:
 class ClientHandler{
 public:
-    virtual void handle(int clientID)=0;
+    virtual void handle(int clientID) = 0;
 };
 
 
 // you can add helper classes here and implement on the cpp file
-
+class SocketIO : public DefaultIO {
+    int clientID;
+public:
+    explicit SocketIO(int cid){
+        clientID = cid;
+    }
+    string read() override {
+        char buffer;
+        string output;
+        recv(clientID, &buffer, sizeof(char), 0);
+        while (buffer != '\n'){
+            output += buffer;
+            recv(clientID, &buffer, sizeof(char), 0);
+        }
+        return output;
+    }
+    void write(string text) override {
+        send(clientID, text.c_str(), text.size(), 0);
+    }
+    void write(float f) override {
+        string text = std::to_string(f);
+        send(clientID, text.c_str(), text.size(), 0);
+    }
+    void read(float *f) override {
+        *f = stof(read());
+    }
+};
 
 // edit your AnomalyDetectionHandler class here
 class AnomalyDetectionHandler:public ClientHandler{
 public:
-    virtual void handle(int clientID){
-        char buffer[1024];
-        //bzero
-        int n = read(clientID, buffer, 100);
-        cout << buffer << endl;
-        const char* hello = "Hello from server";
-        send(clientID, hello, strlen(hello), 0);
+    virtual void handle(int clientID) {
+        SocketIO socketIo = SocketIO(clientID);
+        CLI cli = CLI(&socketIo);
+        cli.start();
     }
 };
 

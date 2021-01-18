@@ -1,8 +1,8 @@
 /*
  * run2.cpp
  *
- *  Created on: 8 áãöî× 2019
- *      Author: Eli
+ *  Created on: 8 ï¿½ï¿½ï¿½ï¿½ï¿½ 2019
+ *      Author: Idan Givati
  */
 
 #include <iostream>

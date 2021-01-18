@@ -10,7 +10,7 @@
 #include <string.h>
 #include <unistd.h>
 
-
+bool release;
 Server::Server(int port) throw(const char*) {
     fd = socket(AF_INET, SOCK_STREAM,0);
     if (fd < 0) {
@@ -28,24 +28,28 @@ Server::Server(int port) throw(const char*) {
     }
 }
 
-void Server::start(ClientHandler& ch) throw(const char*){
+void Server::start(ClientHandler& ch) throw(const char*) {
+    release = false;
     t = new thread([&ch, this] () {
         cout << "Waiting for a client" << endl;
         socklen_t clientSize = sizeof(client);
-        while (true) {
+        while (!release) {
+            alarm(1);
             int aClient = accept(fd, (struct sockaddr*) &client, &clientSize);
+            alarm(0);
             if (aClient < 0) {
                 throw "Accept failure";
             }
             cout << "Client connected!" << endl;
             ch.handle(aClient);
             close(aClient);
-            close(fd);
         }
+        close(fd);
     });
 }
 
 void Server::stop(){
+    release = true;
     t->join(); // do not delete this!
 }
 

@@ -94,7 +94,13 @@
 		<Unit filename="/home/idan/Desktop/AdvProg1/HybridAnomalyDetector.h">
 			<Option target="untitled9"/>
 		</Unit>
-		<Unit filename="/home/idan/Desktop/AdvProg1/MainTrain.cpp">
+		<Unit filename="/home/idan/Desktop/AdvProg1/MainST.cpp">
+			<Option target="untitled9"/>
+		</Unit>
+		<Unit filename="/home/idan/Desktop/AdvProg1/Server.cpp">
+			<Option target="untitled9"/>
+		</Unit>
+		<Unit filename="/home/idan/Desktop/AdvProg1/Server.h">
 			<Option target="untitled9"/>
 		</Unit>
 		<Unit filename="/home/idan/Desktop/AdvProg1/SimpleAnomalyDetector.cpp">

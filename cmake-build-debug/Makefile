@@ -197,32 +197,59 @@ HybridAnomalyDetector.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/untitled9.dir/build.make CMakeFiles/untitled9.dir/HybridAnomalyDetector.cpp.s
 .PHONY : HybridAnomalyDetector.cpp.s
 
-MainTrain.o: MainTrain.cpp.o
+MainST.o: MainST.cpp.o
 
-.PHONY : MainTrain.o
+.PHONY : MainST.o
 
 # target to build an object file
-MainTrain.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/untitled9.dir/build.make CMakeFiles/untitled9.dir/MainTrain.cpp.o
-.PHONY : MainTrain.cpp.o
+MainST.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/untitled9.dir/build.make CMakeFiles/untitled9.dir/MainST.cpp.o
+.PHONY : MainST.cpp.o
 
-MainTrain.i: MainTrain.cpp.i
+MainST.i: MainST.cpp.i
 
-.PHONY : MainTrain.i
+.PHONY : MainST.i
 
 # target to preprocess a source file
-MainTrain.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/untitled9.dir/build.make CMakeFiles/untitled9.dir/MainTrain.cpp.i
-.PHONY : MainTrain.cpp.i
+MainST.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/untitled9.dir/build.make CMakeFiles/untitled9.dir/MainST.cpp.i
+.PHONY : MainST.cpp.i
 
-MainTrain.s: MainTrain.cpp.s
+MainST.s: MainST.cpp.s
 
-.PHONY : MainTrain.s
+.PHONY : MainST.s
 
 # target to generate assembly for a file
-MainTrain.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/untitled9.dir/build.make CMakeFiles/untitled9.dir/MainTrain.cpp.s
-.PHONY : MainTrain.cpp.s
+MainST.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/untitled9.dir/build.make CMakeFiles/untitled9.dir/MainST.cpp.s
+.PHONY : MainST.cpp.s
+
+Server.o: Server.cpp.o
+
+.PHONY : Server.o
+
+# target to build an object file
+Server.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/untitled9.dir/build.make CMakeFiles/untitled9.dir/Server.cpp.o
+.PHONY : Server.cpp.o
+
+Server.i: Server.cpp.i
+
+.PHONY : Server.i
+
+# target to preprocess a source file
+Server.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/untitled9.dir/build.make CMakeFiles/untitled9.dir/Server.cpp.i
+.PHONY : Server.cpp.i
+
+Server.s: Server.cpp.s
+
+.PHONY : Server.s
+
+# target to generate assembly for a file
+Server.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/untitled9.dir/build.make CMakeFiles/untitled9.dir/Server.cpp.s
+.PHONY : Server.cpp.s
 
 SimpleAnomalyDetector.o: SimpleAnomalyDetector.cpp.o
 
@@ -347,9 +374,12 @@ help:
 	@echo "... HybridAnomalyDetector.o"
 	@echo "... HybridAnomalyDetector.i"
 	@echo "... HybridAnomalyDetector.s"
-	@echo "... MainTrain.o"
-	@echo "... MainTrain.i"
-	@echo "... MainTrain.s"
+	@echo "... MainST.o"
+	@echo "... MainST.i"
+	@echo "... MainST.s"
+	@echo "... Server.o"
+	@echo "... Server.i"
+	@echo "... Server.s"
 	@echo "... SimpleAnomalyDetector.o"
 	@echo "... SimpleAnomalyDetector.i"
 	@echo "... SimpleAnomalyDetector.s"
