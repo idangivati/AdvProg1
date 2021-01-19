@@ -6,7 +6,8 @@ set(CMAKE_DEPENDS_LANGUAGES
 set(CMAKE_DEPENDS_CHECK_CXX
   "/home/idan/Desktop/AdvProg1/CLI.cpp" "/home/idan/Desktop/AdvProg1/cmake-build-debug/CMakeFiles/untitled9.dir/CLI.cpp.o"
   "/home/idan/Desktop/AdvProg1/HybridAnomalyDetector.cpp" "/home/idan/Desktop/AdvProg1/cmake-build-debug/CMakeFiles/untitled9.dir/HybridAnomalyDetector.cpp.o"
-  "/home/idan/Desktop/AdvProg1/MainTrain.cpp" "/home/idan/Desktop/AdvProg1/cmake-build-debug/CMakeFiles/untitled9.dir/MainTrain.cpp.o"
+  "/home/idan/Desktop/AdvProg1/MainST.cpp" "/home/idan/Desktop/AdvProg1/cmake-build-debug/CMakeFiles/untitled9.dir/MainST.cpp.o"
+  "/home/idan/Desktop/AdvProg1/Server.cpp" "/home/idan/Desktop/AdvProg1/cmake-build-debug/CMakeFiles/untitled9.dir/Server.cpp.o"
   "/home/idan/Desktop/AdvProg1/SimpleAnomalyDetector.cpp" "/home/idan/Desktop/AdvProg1/cmake-build-debug/CMakeFiles/untitled9.dir/SimpleAnomalyDetector.cpp.o"
   "/home/idan/Desktop/AdvProg1/anomaly_detection_util.cpp" "/home/idan/Desktop/AdvProg1/cmake-build-debug/CMakeFiles/untitled9.dir/anomaly_detection_util.cpp.o"
   "/home/idan/Desktop/AdvProg1/minCircle.cpp" "/home/idan/Desktop/AdvProg1/cmake-build-debug/CMakeFiles/untitled9.dir/minCircle.cpp.o"

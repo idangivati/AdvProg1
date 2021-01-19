@@ -2,7 +2,7 @@
  * anomaly_detection_util.cpp
  *
  *  Created on: 08/12/2020
- *      Author: Eli
+ *      Author: Idan Givati
  */
 
 #include <math.h>

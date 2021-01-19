@@ -24,14 +24,15 @@
 
 using namespace std;
 
-// edit your ClientHandler interface here:
 class ClientHandler{
 public:
     virtual void handle(int clientID) = 0;
 };
 
-
-// you can add helper classes here and implement on the cpp file
+/**
+ * A class to change the default IO to the socket IO that we want, we will override the methods so we can
+ * turn them to the client id related.
+ */
 class SocketIO : public DefaultIO {
     int clientID;
 public:
@@ -60,7 +61,6 @@ public:
     }
 };
 
-// edit your AnomalyDetectionHandler class here
 class AnomalyDetectionHandler:public ClientHandler{
 public:
     virtual void handle(int clientID) {
@@ -77,8 +77,6 @@ class Server {
     int fd;
     sockaddr_in server;
     sockaddr_in client;
-
-    // you may add data members
 
 public:
     Server(int port) throw (const char*);

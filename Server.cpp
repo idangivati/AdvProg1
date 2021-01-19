@@ -11,6 +11,10 @@
 #include <unistd.h>
 
 bool release;
+/**
+ * Making connection.
+ * @param port the port we working on,
+ */
 Server::Server(int port) throw(const char*) {
     fd = socket(AF_INET, SOCK_STREAM,0);
     if (fd < 0) {
@@ -27,7 +31,10 @@ Server::Server(int port) throw(const char*) {
         throw "Listen failure";
     }
 }
-
+/**
+ * open and close connection with clients.
+ * @param ch the client handler format we received.
+ */
 void Server::start(ClientHandler& ch) throw(const char*) {
     release = false;
     t = new thread([&ch, this] () {
@@ -47,7 +54,9 @@ void Server::start(ClientHandler& ch) throw(const char*) {
         close(fd);
     });
 }
-
+/**
+ * In case we want to stop the connection.
+ */
 void Server::stop(){
     release = true;
     t->join(); // do not delete this!
